@@ -241,8 +241,8 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 
 
 #### Static Application Security Testing (SAST)
-- SonarSource
-- kiuwan
+- [SonarQube](https://www.sonarqube.org)
+- [kiuwan](https://www.kiuwan.com/code-security-sast/)
 
 #### Dependencies
 ##### Tips
@@ -267,8 +267,8 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 
 ##### Licensing 
 - [FOSSA](https://fossa.io) - SaaS 
-- `license-to-fail` - CI error if whitelist not met
-- `npm-license-crawler` - compile list of licenses that need to be displayed
+- [`license-to-fail`](https://www.npmjs.com/package/license-to-fail) - CI error if whitelist not met
+- [`npm-license-crawler`](https://github.com/mwittig/npm-license-crawler) - compile list of licenses that need to be displayed
 - [License Zero](https://licensezero.com) - get / buy missing 
 
 ##### Missing
