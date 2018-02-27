@@ -356,4 +356,6 @@ To prevent this, get a private repo that proxies and caches packages
 - function error rate
 
 ## References
-- https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf
+- [OWASP 2010 Top 10](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/owasptop10/OWASP%20Top%2010%20-%202010.pdf)
+- [OWASP 2013 Top 10](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/owasptop10/OWASP%20Top%2010%20-%202013.pdf)
+- [OWASP 2017 Top 10](https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf)
