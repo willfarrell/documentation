@@ -106,7 +106,7 @@ Host cn-test-web-1
   - https://blog.eleven-labs.com/en/openpgp-almost-perfect-key-pair-part-1/
   - https://alexcabal.com/creating-the-perfect-gpg-keypair/
   - https://spin.atomicobject.com/2013/11/24/secure-gpg-keys-guide/
-
+  - Add `export GPG_TTY=$(tty)` to your bashrc file
 
 ### git (English slang for `a stupid person`) 
 ```bash
@@ -131,7 +131,7 @@ git config --global user.signingkey SEC_LONG_VALUE
 ### Quality Assurance (QA)
 
 #### GitHub Branch Enforcement 
-Basically enable everything for master and develop.
+Basically enable everything for `master` and `develop`.
 - [x] Protect this branch
   - [x] Require pull request reviews before merging
      - [x] Dismiss stale pull request approvals when new commits are pushed
@@ -150,6 +150,7 @@ Basically enable everything for master and develop.
   
 ##### Commits
 - Standard: [Conventional Commits](https://conventionalcommits.org/)
+  - PreReq Reading: [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
 - Enforce: [`commitlint`](http://marionebl.github.io/commitlint/#/)
  
 ```json
@@ -201,7 +202,7 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
 - [`standard`](https://standardjs.com) - linting
-- [`prettier-standard`](https://github.com/sheerun/prettier-standard)
+- [`prettier-standard`](https://github.com/sheerun/prettier-standard) - bring them together
 
 ```json
 {
