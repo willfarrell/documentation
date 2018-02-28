@@ -22,11 +22,24 @@ v2018.02.28 By @willfarrell
 
 ### Chrome Extensions
 - [Clear Cache](https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn)
-- [Dimensions](http://felixniklas.com/dimensions/)
 - [EditThisCookie](http://www.editthiscookie.com/)
-- [Full Page Screen Capture](https://mrcoles.com/full-page-screen-capture-chrome-extension/)
+- [JSON Formatter](https://github.com/callumlocke/json-formatter)
 - [ng-inspector](http://ng-inspector.org/)
 - [React Developer Tools](https://github.com/facebook/react-devtools)
+
+#### Performance
+- [YSlow](http://yslow.org/)
+
+#### Design
+- [Dimensions](http://felixniklas.com/dimensions/)
+- [Full Page Screen Capture](https://mrcoles.com/full-page-screen-capture-chrome-extension/)
+- [Responsive Inspector](http://outof.me/responsive-inspector/)
+
+#### Testing
+- [Browser Stack](https://chrome.google.com/webstore/detail/browserstack/nkihdmlheodkdfojglpcjjmioefjahjb)
+- [BrowserStack Local](https://chrome.google.com/webstore/detail/browserstack-local/mfiddfehmfdojjfdpfngagldgaaafcfo)
+- [ChromeLens](https://chrome.google.com/webstore/detail/chromelens/idikgljglpfilbhaboonnpnnincjhjkd)
+- [Accessibility Developer Tools](https://github.com/googlearchive/accessibility-developer-tools-extension) By Google
 
 ## Terminal
 
