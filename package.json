@@ -1,0 +1,48 @@
+{
+  "name": "@willfarrell/documentation",
+  "version": "1.0.0",
+  "description": "General project documentation",
+  "main": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "release": "standard-version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://willfarrell@github.com/willfarrell/documentation.git"
+  },
+  "author": "willfarrell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willfarrell/documentation/issues"
+  },
+  "homepage": "https://github.com/willfarrell/documentation#readme",
+  "devDependencies": {
+    "@commitlint/cli": "6.1.2",
+    "@commitlint/config-conventional": "6.1.2",
+    "husky": "0.14.3",
+    "standard-version": "^4.3.0"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "scope-enum": [
+        1,
+        "always",
+        [
+          "template",
+          "handbook",
+          "security",
+          "packaging",
+          "changelog"
+        ]
+      ]
+    }
+  }
+}
