@@ -101,20 +101,38 @@ Host cn-test-web-1
 ```
 
 ### gpg (GNU Privacy Guard) (WIP)
-- use for email and signing git commits
-  - TODO finsh gist
-  - https://blog.eleven-labs.com/en/openpgp-almost-perfect-key-pair-part-1/
-  - https://alexcabal.com/creating-the-perfect-gpg-keypair/
-  - https://spin.atomicobject.com/2013/11/24/secure-gpg-keys-guide/
-  - Add `export GPG_TTY=$(tty)` to your bashrc file
+Use for encrypting emails / files and signing git commits
+
+1. Open `GPG Keychain`
+1. Generate new key pair
+  - Name: Your Name
+  - Email: email@example.com
+  - Password: ************
+  - Confirm: ************
+  - Key type: RSA and RSA (default)
+  - Length: 4096
+  - Key expires: true
+  - Expiration date: 1 year
+1. Click `Export`, Save public key
+1. Upload your public key
+  - [GitHub](https://help.github.com/articles/adding-a-new-gpg-key-to-your-github-account/)
+  - [MIT](https://pgp.mit.edu)
+  - [PGP Global Directory](https://keyserver.pgp.com)
+1. Click `Export`, Save secret key
+1. Backup your private key
 
 ### git (English slang for `a stupid person`) 
 ```bash
 git config --global user.name "FULL NAME"
 git config --global user.email "EMAIL@example.com"
 
+# GPG - https://help.github.com/articles/telling-git-about-your-gpg-key/
 gpg --list-secret-keys --keyid-format LONG
-git config --global user.signingkey SEC_LONG_VALUE
+# Copy >>VALUE<< from `sec   rsa4096/>>912C0E0667AB2369<< 2018-02-28 ...`
+git config --global commit.gpgsign true
+git config --global user.signingkey ${VALUE}
+
+git config --global --list
 ```
 
 ## Secret Management (WIP)

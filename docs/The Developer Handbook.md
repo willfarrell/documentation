@@ -4,7 +4,7 @@ v2018.02.28 By @willfarrell
 ## Applications
 - [Xcode](https://developer.apple.com/xcode/) - Xcode Command Line Tools
 - [Alfred](https://www.alfredapp.com) - Spotlight replacement
-- [Docker for Mac](https://www.docker.com/docker-mac) - Conatiners
+- [Docker for Mac](https://www.docker.com/docker-mac) - Containers
 - [Dash](https://kapeli.com/dash) - Documentation
 - [Paw](https://paw.cloud) - REST API testing
 - [Tower](https://www.git-tower.com/mac/) - git Client
