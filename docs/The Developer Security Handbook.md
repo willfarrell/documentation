@@ -1,5 +1,5 @@
 # The Developer Security Handbook (WIP)
-v2018.02.13 By @willfarrell
+v2018.02.28 By @willfarrell
 
 ## Terminal
 ### ssh (Secure Shell)
@@ -112,14 +112,14 @@ Use for encrypting emails / files and signing git commits
   - Key type: RSA and RSA (default)
   - Length: 4096
   - Key expires: true
-  - Expiration date: 1 year
+  - Expiration date: ~1 year
 1. Click `Export`, Save public key
+1. Click `Export`, Save secret key
+1. Backup your private key
 1. Upload your public key
   - [GitHub](https://help.github.com/articles/adding-a-new-gpg-key-to-your-github-account/)
   - [MIT](https://pgp.mit.edu)
   - [PGP Global Directory](https://keyserver.pgp.com)
-1. Click `Export`, Save secret key
-1. Backup your private key
 
 ### git (English slang for `a stupid person`) 
 ```bash
