@@ -105,21 +105,24 @@ Use for encrypting emails / files and signing git commits
 
 1. Open `GPG Keychain`
 1. Generate new key pair
-  - Name: Your Name
-  - Email: email@example.com
-  - Password: ************
-  - Confirm: ************
-  - Key type: RSA and RSA (default)
-  - Length: 4096
-  - Key expires: true
-  - Expiration date: ~1 year
+   - Name: Your Name
+   - Email: email@example.com
+   - Password: ************
+   - Confirm: ************
+   - Key type: RSA and RSA (default)
+   - Length: 4096
+   - Key expires: true
+   - Expiration date: ~1 year
 1. Click `Export`, Save public key
 1. Click `Export`, Save secret key
 1. Backup your private key
 1. Upload your public key
-  - [GitHub](https://help.github.com/articles/adding-a-new-gpg-key-to-your-github-account/)
-  - [MIT](https://pgp.mit.edu)
-  - [PGP Global Directory](https://keyserver.pgp.com)
+   - [GitHub](https://help.github.com/articles/adding-a-new-gpg-key-to-your-github-account/)
+   - [MIT](https://pgp.mit.edu)
+   - [PGP Global Directory](https://keyserver.pgp.com)
+
+### YubiKey
+Have a YubiKey? [YubiKey-Guide](https://github.com/drduh/YubiKey-Guide)
 
 ### git (English slang for `a stupid person`) 
 ```bash
