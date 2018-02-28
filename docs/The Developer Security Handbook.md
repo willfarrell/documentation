@@ -6,6 +6,8 @@ v2018.02.28 By @willfarrell
 Every device gets its own ssh keys.
 - Generate keys https://gist.github.com/willfarrell/e9b7553367f5edca0ac7e0b8e9647a04
 
+TODO: otfe of ssh keys on sleep
+
 #### File Structure
 ```bash
 .ssh
@@ -24,6 +26,7 @@ Every device gets its own ssh keys.
 
 #### ~/.ssh/config
 ```
+# TODO add in why for each
 Host *
   ControlMaster auto
   ControlPath /tmp/ssh_%r@%h:%p
@@ -104,7 +107,7 @@ Host cn-test-web-1
 Use for encrypting emails / files and signing git commits
 
 1. Open `GPG Keychain`
-1. Generate new key pair
+1. Generate new master key and encryption subkey, then press `???`
    - Name: Your Name
    - Email: email@example.com
    - Password: ************
@@ -113,6 +116,14 @@ Use for encrypting emails / files and signing git commits
    - Length: 4096
    - Key expires: true
    - Expiration date: ~1 year
+1. Select the key you just created and click `Details`
+1. Toggle to `Subkeys` and press `+`
+1. Generate a signing subkey, then press `Generate Key`
+   - Key type: RSA (sign only)
+   - Length: 4096
+   - Key expires: true
+   - Expiration date: ~1 year
+1. Generate a [authentication subkey](https://github.com/drduh/YubiKey-Guide#authentication-key) in Terminal `gpg --expert --edit-key $KEYID`
 1. Click `Export`, Save public key
 1. Click `Export`, Save secret key
 1. Backup your private key
@@ -121,8 +132,16 @@ Use for encrypting emails / files and signing git commits
    - [MIT](https://pgp.mit.edu)
    - [PGP Global Directory](https://keyserver.pgp.com)
 
+TODO: otfe of private keys on sleep
+
 ### YubiKey
-Have a YubiKey? [YubiKey-Guide](https://github.com/drduh/YubiKey-Guide)
+Have a YubiKey?
+
+TODO:
+- yubikey for ssh - [YubiKey-Guide](https://github.com/drduh/YubiKey-Guide)
+- yubikey for git
+- yubikey for otfe
+- yubikey for email?
 
 ### git (English slang for `a stupid person`) 
 ```bash
@@ -217,9 +236,12 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 }
 ```
 
-
-
 #### Code Analysis
+##### Secrets & Tokens
+Ensure Secrets and Token are not committed
+- [gitleaks](https://github.com/zricethezav/gitleaks)
+- [How to remove them safely](https://help.github.com/articles/removing-sensitive-data-from-a-repository/)
+
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
 - [`standard`](https://standardjs.com) - linting
@@ -277,6 +299,7 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 ##### Version Up to Date
 - [David DM](https://david-dm.org) - OpenSource SaaS
 - [Greenkeeper](https://greenkeeper.io) - SaaS
+- [Gemnasium](https://gemnasium.com) - SaaS
 - [`npm outdated`](https://docs.npmjs.com/cli/outdated)
 - [`npm-check`](https://github.com/dylang/npm-check)
 - [`version-check`](https://github.com/iamssen/version-check)
@@ -284,8 +307,14 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 ##### Security vulnerabilities
 - [snyk](https://snyk.io) - SaaS
 - [Node Security Platform](https://nodesecurity.io) - SaaS
+- [David DM](https://david-dm.org)
 - [GitHub](https://help.github.com/articles/about-security-alerts-for-vulnerable-dependencies)
+- [`nsp`](https://github.com/nodesecurity/nsp) - OpenSource
 - [`retire`](http://retirejs.github.io/retire.js/) - OpenSource
+
+##### Malware
+
+
 
 ##### Licensing 
 - [FOSSA](https://fossa.io) - SaaS 
@@ -319,6 +348,7 @@ To prevent this, get a private repo that proxies and caches packages
 - [`istanbul`](https://github.com/gotwarlost/istanbul)
 - [Coveralls](https://coveralls.io) - SaaS
 - [SonarSource](https://www.sonarsource.com) - SaaS
+- [Code Climate](https://codeclimate.com) - SaaS
 
 ### IDE (WIP)
 #### IntelliJ IDEA
@@ -364,6 +394,7 @@ To prevent this, get a private repo that proxies and caches packages
 - [`sonarwhal`](https://sonarwhal.com) - best practices
 - TLS - ssllabs.com by Qualys
 - OWASP Scanning - Qualys w/ Selenium
+- Malware
 - Secure Headers - securityheaders.io
 - Tips:
   - API Gateway should have `/ping` and/or `/health` for testing

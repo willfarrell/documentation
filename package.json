@@ -36,8 +36,8 @@
         1,
         "always",
         [
-          "template",
           "handbook",
+          "template",
           "security",
           "packaging",
           "changelog"
