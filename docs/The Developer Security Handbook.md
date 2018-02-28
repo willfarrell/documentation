@@ -185,7 +185,7 @@ Basically enable everything for `master` and `develop`.
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "commitlint": {
-    "extends":["@commitlint/config-conventional"]
+    "extends":["@commitlint/config-conventional"],
     "rules":{
       "scope-enum":[1, "always",[***ADD YOUR SCOPES HERE***,"security","packaging","changelog"]]
     }
