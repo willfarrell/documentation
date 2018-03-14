@@ -1,6 +1,7 @@
 # The Developer Security Handbook (WIP)
 v2018.03.08 By @willfarrell
 
+[![Standards - Fortunately, the charging one has been solved now that we've all standardized on mini-USB. Or is it micro-USB? Shit.](https://imgs.xkcd.com/comics/standards.png)](https://xkcd.com/927/)
 ## Security Policy as Code
 - https://www.conjur.org/blog/2018/03/06/security-as-first-class-citizen.html
 
@@ -231,8 +232,7 @@ $ npm i -D husky @commitlint/{cli,config-conventional,config-lerna-scopes}
 }
 ```
 
-
-![Git Commit (https://xkcd.com/1296/)](https://imgs.xkcd.com/comics/git_commit.png)
+[![Git Commit - Merge branch 'asdfasjkfdlas/alkdjf' into sdkjfls-final](https://imgs.xkcd.com/comics/git_commit.png)](https://xkcd.com/1296/)
 
 ##### Versioning:
 - Standard: [Semantic Versioning](https://semver.org) 
@@ -257,27 +257,29 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 ```
 
 #### Code Analysis
+TODO research `npx standard-damn-it` - setup repo
 
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
 - [`standard`](https://standardjs.com) - linting
+- [`semistandard`](https://github.com/Flet/semistandard) - `standard` with semicolons
 - [`prettier-standard`](https://github.com/sheerun/prettier-standard) - bring them together
 
+```
+$ npm i -D husky lint-staged prettier-standard
+```
 ```json
 {
   "devDependencies": {
   	"lint-staged":"*",
   	"husky":"*",
-    "prettier":"*",
-    "standard":"*",
     "prettier-standard":"*"
   },
   "scripts": {
     "precommit":"lint-staged"
   },
   "lint-staged": {
-    "src/**/*.js": ["prettier-standard", "git add"],
-    "src/**/*.json": ["prettier --write", "git add"]
+    "src/**/*.{js,json}": [ "prettier-standard", "git add" ]
   }
 }
 ```
@@ -397,12 +399,12 @@ Use popular well known deps
   - Requires config w/ server
 
 #### Sublime Text 3 (ST3)
-- [Prettier]() - needs link
-- [Standard]() - needs link
+- [prettier-standard](https://github.com/sheerun/prettier-standard#sublime-text-3)
+- [Prettier](https://packagecontrol.io/packages/JsPrettier)
 - [SonarLint]() - needs link
 
 #### Atom
-- [Prettier]() - needs link
+- [Prettier](https://github.com/prettier/prettier-atom)
 - [Standard]() - needs link
 - [SonarLint]() - needs link
 
@@ -459,8 +461,7 @@ Use popular well known deps
 ### Web Application Security
 - https://blog.risingstack.com/node-js-security-checklist/
 #### DNS
-- http://dnscheck.pingdom.com
-- http://dnscheck.iis.se
+- http://dnscheck.pingdom.com / http://dnscheck.iis.se
 
 - [ ] DNSSEC
 - [ ] CAA
@@ -500,7 +501,7 @@ Use popular well known deps
   - API Gateway should have `/ping` and/or `/health` for testing
   - `?healthcheck` arg to flag for internal health checks
 
-![Exploits of a Mom (https://xkcd.com/327/)](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
+[![Exploits of a Mom - Her daughter is named Help I'm trapped in a driver's license factory.](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)](https://xkcd.com/327/)
 
 ### Availability
 - endpoint 
