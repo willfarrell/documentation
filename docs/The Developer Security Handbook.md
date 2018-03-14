@@ -1,5 +1,8 @@
 # The Developer Security Handbook (WIP)
-v2018.02.28 By @willfarrell
+v2018.03.08 By @willfarrell
+
+## Security Policy as Code
+- https://www.conjur.org/blog/2018/03/06/security-as-first-class-citizen.html
 
 ## Terminal
 ### ssh (Secure Shell)
@@ -15,8 +18,11 @@ TODO: otfe of ssh keys on sleep
 |-- config.d
 |   |-- git
 |   |-- company-env		# multiple following this format
+|   |-- radius			# for WiFi
+|   |-- retropi			# Who doesn't have one
 |-- id_ecdsa
 |-- id_ecdsa.pub
+|-- id_ecdsa256.pub		# from sekey
 |-- id_ec25519
 |-- id_ec25519.pub
 |-- id_rsa
@@ -62,7 +68,6 @@ Host bitbucket.org
 Host gitlab.com
   HostName gitlab.com
   User git
-  RSAAuthentication yes
   IdentityFile ~/.ssh/id_rsa
 
 ### GitHub ###
@@ -134,7 +139,7 @@ Use for encrypting emails / files and signing git commits
 
 TODO: otfe of private keys on sleep
 
-### YubiKey
+### YubiKey (WIP)
 Have a YubiKey?
 
 TODO:
@@ -163,6 +168,7 @@ git config --global --list
 
 ## Key Management (WIP)
 ### AWS Credentials
+Don't use `[default]`, this forces the use of the `--profile` arg so you're consciously choosing the account you're interfacing with.
 
 **Naming convention:** `${company}-${env}`
 
@@ -187,30 +193,44 @@ Basically enable everything for `master` and `develop`.
 - Install: `brew install git-flow`
  
 ![git-flow Diagram](https://wac-cdn.atlassian.com/dam/jcr:61ccc620-5249-4338-be66-94d563f2843c)
-  
+
 ##### Commits
 - Standard: [Conventional Commits](https://conventionalcommits.org/)
   - PreReq Reading: [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
+
+```
+{type:build,chore,ci,docs,feat,fix,perf,refactor,revert,style,test}[({optional scope:security,packaging,changelog,__custom__})]: description
+
+[optional body]
+
+[optional footer]
+```
+
+- TODO add details for body - links to blogs/code researched
+
 - Enforce: [`commitlint`](http://marionebl.github.io/commitlint/#/)
- 
+- Enforce Scopes: [`lerna-scopes`](https://github.com/marionebl/commitlint/tree/master/%40commitlint/config-lerna-scopes) from [`lerna`](https://lernajs.io)
+
+```
+$ npm i -D husky @commitlint/{cli,config-conventional,config-lerna-scopes}
+```
 ```json
 {
   "devDependencies": {
     "husky":"*",
     "@commitlint/cli":"*",
-    "@commitlint/config-conventional":"*"
+    "@commitlint/config-conventional":"*",
+    "@commitlint/config-lerna-scopes":"*"
   },
   "scripts": {
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "commitlint": {
-    "extends":["@commitlint/config-conventional"],
-    "rules":{
-      "scope-enum":[1, "always",[***ADD YOUR SCOPES HERE***,"security","packaging","changelog"]]
-    }
+    "extends":["@commitlint/config-conventional","@commitlint/config-lerna-scopes"]
   }
 }
 ```
+
 
 ![Git Commit (https://xkcd.com/1296/)](https://imgs.xkcd.com/comics/git_commit.png)
 
@@ -237,10 +257,6 @@ Updates       | [`npm version`](https://docs.npmjs.com/cli/version) | [`semantic
 ```
 
 #### Code Analysis
-##### Secrets & Tokens
-Ensure Secrets and Token are not committed
-- [gitleaks](https://github.com/zricethezav/gitleaks)
-- [How to remove them safely](https://help.github.com/articles/removing-sensitive-data-from-a-repository/)
 
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
@@ -282,15 +298,21 @@ Ensure Secrets and Token are not committed
   ]
 }
 ```
-
+##### Secrets & Tokens
+Ensure Secrets and Token are not committed
+- [gitleaks](https://github.com/zricethezav/gitleaks)
+- [How to remove them safely](https://help.github.com/articles/removing-sensitive-data-from-a-repository/)
 
 #### Static Application Security Testing (SAST)
 - [SonarQube](https://www.sonarqube.org)
 - [kiuwan](https://www.kiuwan.com/code-security-sast/)
+- [`eslint-plugin-security`](https://github.com/nodesecurity/eslint-plugin-security)
 
 #### Dependencies
+- [bithound](https://www.bithound.io)
+
 ##### Tips
-- lock to a certain version, update manually
+- pinned to a certain version, update manually
 
 ##### No Unused Packages
 - [`depcheck`](https://github.com/depcheck/depcheck)
@@ -298,6 +320,7 @@ Ensure Secrets and Token are not committed
 
 ##### Version Up to Date
 - [David DM](https://david-dm.org) - OpenSource SaaS
+  - [`david`](https://github.com/alanshaw/david) - OpenSource
 - [Greenkeeper](https://greenkeeper.io) - SaaS
 - [Gemnasium](https://gemnasium.com) - SaaS
 - [`npm outdated`](https://docs.npmjs.com/cli/outdated)
@@ -307,20 +330,24 @@ Ensure Secrets and Token are not committed
 ##### Security vulnerabilities
 - [snyk](https://snyk.io) - SaaS
 - [Node Security Platform](https://nodesecurity.io) - SaaS
+  - [`nsp`](https://github.com/nodesecurity/nsp) - OpenSource
 - [David DM](https://david-dm.org)
 - [GitHub](https://help.github.com/articles/about-security-alerts-for-vulnerable-dependencies)
-- [`nsp`](https://github.com/nodesecurity/nsp) - OpenSource
 - [`retire`](http://retirejs.github.io/retire.js/) - OpenSource
 
-##### Malware
-
-
-
-##### Licensing 
+##### Licensing (WIP)
 - [FOSSA](https://fossa.io) - SaaS 
+- [`licenser-checker`](https://www.npmjs.com/package/license-checker) - Scans repository
+- [`npm-license`](https://www.npmjs.com/package/npm-license) - iterative scan of repo
 - [`license-to-fail`](https://www.npmjs.com/package/license-to-fail) - CI error if whitelist not met
 - [`npm-license-crawler`](https://github.com/mwittig/npm-license-crawler) - compile list of licenses that need to be displayed
 - [License Zero](https://licensezero.com) - get / buy missing 
+- [Creative Commons](https://creativecommons.org/publicdomain/zero/1.0/) - No License
+- [API Commons](http://apicommons.org/)
+
+##### Malware (WIP)
+- [Sophos](https://www.sophos.com/en-us/security-news-trends/security-trends/malicious-javascript.aspx)
+- [Hash Registry](https://www.npmjs.com/package/malware-hash-registry)
 
 ##### Missing
 Sometimes dependencies go missing (ie. [left-pad](http://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm), [2018-02](https://status.npmjs.org/incidents/36j9bnllqtnj), [2018-01](https://status.npmjs.org/incidents/41zfb8qpvrdj)).
@@ -329,6 +356,15 @@ To prevent this, get a private repo that proxies and caches packages
 - [npm Enterprise](https://www.npmjs.com/enterprise) - SaaS
 - [JFrog](https://www.jfrog.com/confluence/display/RTF/Npm+Registry) - SaaS
 - Others SaaS offering: gemfurry, cloudsmith
+
+- [`local-npm`](https://addyosmani.com/blog/using-npm-offline/)
+
+##### Reputation
+Use popular well known deps
+- downloads /day, /month, year
+- github stats
+- dependents
+- badges: for topics above
 
 ### Testing
 - Angular - protractor
@@ -350,6 +386,9 @@ To prevent this, get a private repo that proxies and caches packages
 - [SonarSource](https://www.sonarsource.com) - SaaS
 - [Code Climate](https://codeclimate.com) - SaaS
 
+### Anti-Virus (WIP)
+- [ClamAV](https://www.clamav.net) - [clamav.js](https://www.npmjs.com/package/clamav.js), [s3-antivirus](https://www.npmjs.com/package/s3-antivirus), [clamscan](https://www.npmjs.com/package/clamscan)
+
 ### IDE (WIP)
 #### IntelliJ IDEA
 - [Prettier](https://prettier.io/docs/en/webstorm.html)
@@ -358,6 +397,14 @@ To prevent this, get a private repo that proxies and caches packages
   - Requires config w/ server
 
 #### Sublime Text 3 (ST3)
+- [Prettier]() - needs link
+- [Standard]() - needs link
+- [SonarLint]() - needs link
+
+#### Atom
+- [Prettier]() - needs link
+- [Standard]() - needs link
+- [SonarLint]() - needs link
 
 ## Continuous Integration / Continuous Deployment (WIP)
 
@@ -366,15 +413,34 @@ To prevent this, get a private repo that proxies and caches packages
 - Jenkins
   - Codeship
 
-## APIGateway
+## API Gateway
 - [OpenAPI](https://www.openapis.org) - definition (basically swagger under the hood)
 - [jsonapi](http://jsonapi.org) - response format
 - [apidocs](http://apidocjs.com) - documentation
 
-## Infrastructure
+### Middleware
+- authorizations
+- rate limiting
+- cache
+- formatting
+- sanitization & xss
+- req validation
+- csrf
+- res validation
+
+### Schema
+- ajv - json-schema
+- json-schema-to-graphql-types
+
+### Graphql
+- https://github.com/aws-samples/aws-mobile-appsync-events-starter-react
+
+## Infrastructure (WIP)
 - [Terraform](https://www.terraform.io)
 - [`terragrunt`](https://github.com/gruntwork-io/terragrunt)
 
+### AWS
+- sub accounts
 
 ## Logging (WIP)
 - OWASP A10:2017
@@ -391,12 +457,46 @@ To prevent this, get a private repo that proxies and caches packages
 ## Monitoring (WIP)
 
 ### Web Application Security
+- https://blog.risingstack.com/node-js-security-checklist/
+#### DNS
+- http://dnscheck.pingdom.com
+- http://dnscheck.iis.se
+
+- [ ] DNSSEC
+- [ ] CAA
+- [ ] SPF (if MX)
+
+#### TLS
+- hstspreload.org
+- ssllabs.com by Qualys (API) [node](https://github.com/keithws/node-ssllabs)
+- [ ] Unrevocated TLS certificates
+
+#### Headers
+- securityheaders.io [php]
+- https://observatory.mozilla.org (API) [python](https://github.com/mozilla/http-observatory)
+
+#### Cookies
+- https://observatory.mozilla.org
+
+- Flags:
+  - [ ] secure
+  - [ ] httpOnly
+- Scope
+  - [ ] domain
+  - [ ] path
+  - [ ] expires
+- [ ] csrf
+
+#### Spiders
+- ZAProxy Basic
+- ZAProxy API via OpenAPI.json
+- Qualys w/ Selenium (https://www.qualys.com/documentation/)
 - [`sonarwhal`](https://sonarwhal.com) - best practices
-- TLS - ssllabs.com by Qualys
-- OWASP Scanning - Qualys w/ Selenium
+
+#### Other
 - Malware
-- Secure Headers - securityheaders.io
-- Tips:
+
+#### Tips
   - API Gateway should have `/ping` and/or `/health` for testing
   - `?healthcheck` arg to flag for internal health checks
 

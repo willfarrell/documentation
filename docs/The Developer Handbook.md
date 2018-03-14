@@ -140,3 +140,15 @@ _ssh()
 complete -F _ssh ssh
 ```
 
+## PR
+- TODO PR template
+- tests
+- linting
+- 
+
+## Share localhost with other to test features branches - https://github.com/localtunnel/localtunnel
+
+## Testing
+- should be higher percent coverage
+- use of .skip to place holder tests that are needed and the manual ones
+
