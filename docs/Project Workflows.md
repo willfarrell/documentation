@@ -6,6 +6,20 @@ v2018.02.12 By @willfarrell
 - `git-labelmaker`
 - label schemas
 
+### Settings
+#### Options
+- [ ] Wikis
+- [x] Restrict editing to users in teams with push access only
+- [x] Issues
+- [x] Allow forking
+- [ ] Projects
+
+#### Branches
+Settings as per Developer Handbook
+
+#### Integrations / Webhooks
+TODO services from deve handbook
+
 ### Document Templates
 ```
 |-- .github

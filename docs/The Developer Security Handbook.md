@@ -1,7 +1,6 @@
 # The Developer Security Handbook (WIP)
-v2018.03.08 By @willfarrell
+v2018.03.14 By @willfarrell
 
-[![Standards - Fortunately, the charging one has been solved now that we've all standardized on mini-USB. Or is it micro-USB? Shit.](https://imgs.xkcd.com/comics/standards.png)](https://xkcd.com/927/)
 ## Security Policy as Code
 - https://www.conjur.org/blog/2018/03/06/security-as-first-class-citizen.html
 
@@ -149,7 +148,19 @@ TODO:
 - yubikey for otfe
 - yubikey for email?
 
-### git (English slang for `a stupid person`) 
+### git (English slang for `a stupid person`)
+```bash
+#~/.gitconfig
+
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+
+```
+
 ```bash
 git config --global user.name "FULL NAME"
 git config --global user.email "EMAIL@example.com"
@@ -163,17 +174,51 @@ git config --global user.signingkey ${VALUE}
 git config --global --list
 ```
 
+## Infrastructure (AWS)
+EU General Data Protection Regulation (GDPR) - https://segment.com/blog/segment-and-the-gdpr/
+- https://segment.com/blog/secure-access-to-100-aws-accounts/
+
+### Credentials
+Don't use `[default]`, this forces the use of the `--profile` arg so you're consciously choosing the account you're interfacing with.
+
+- [Gruntworks aws-auth](https://github.com/gruntwork-io/module-security-public/tree/master/modules/aws-auth)
+
+### Structure
+```
+root 				# IAM Users, Billing
+|-- operations 		# CloudTrial, GuardDuty, TerraForm State, Vault
+|-- forensics		# Empty, to be used when forensics need to be done
+|-- production		# Production [master commit@tag]
+|-- staging			# External Testing [release tag]
+|-- testing			# Internal Testing [release commit]
+|-- development		# Developer Sandbox [develop commit]
+```
+
 ## Secret Management (WIP)
 - HashiCorp Vault
 - docker secret
 
 ## Key Management (WIP)
-### AWS Credentials
-Don't use `[default]`, this forces the use of the `--profile` arg so you're consciously choosing the account you're interfacing with.
+
 
 **Naming convention:** `${company}-${env}`
 
 ## Code
+
+### Documentation
+#### README 
+- https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+
+TODO add in .github templates/samples
+
+### Standards
+[![Standards - Fortunately, the charging one has been solved now that we've all standardized on mini-USB. Or is it micro-USB? Shit.](https://imgs.xkcd.com/comics/standards.png)](https://xkcd.com/927/)
+
+- [ISO 8601]() Timestamp
+- [JSON Schema]() Form and API sanitization and validation
+
+### Approved npm (WIP)
+ajv, moment, lodash
 
 ### Quality Assurance (QA)
 
@@ -183,8 +228,10 @@ Basically enable everything for `master` and `develop`.
   - [x] Require pull request reviews before merging
      - [x] Dismiss stale pull request approvals when new commits are pushed
      - [x] Require review from Code Owners
+     - [ ] Restrict who can dismiss pull request reviews
   - [x] Require status checks to pass before merging
      - [x] Require branches to be up to date before merging
+  - [ ] Restrict who can push to this branch
   - [x] Require signed commits
   - [x] Include administrators
   
@@ -464,13 +511,14 @@ Use popular well known deps
 - http://dnscheck.pingdom.com / http://dnscheck.iis.se
 
 - [ ] DNSSEC
+- [ ] DANE - https://github.com/vdukhovni/danecheck
 - [ ] CAA
 - [ ] SPF (if MX)
 
 #### TLS
 - hstspreload.org
 - ssllabs.com by Qualys (API) [node](https://github.com/keithws/node-ssllabs)
-- [ ] Unrevocated TLS certificates
+- [ ] nopn-revoked TLS certificates
 
 #### Headers
 - securityheaders.io [php]
@@ -493,6 +541,7 @@ Use popular well known deps
 - ZAProxy API via OpenAPI.json
 - Qualys w/ Selenium (https://www.qualys.com/documentation/)
 - [`sonarwhal`](https://sonarwhal.com) - best practices
+- [tinfoilsecurity](https://www.tinfoilsecurity.com)
 
 #### Other
 - Malware
