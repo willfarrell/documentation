@@ -174,6 +174,37 @@ git config --global user.signingkey ${VALUE}
 git config --global --list
 ```
 
+#### CI Variables
+```bash
+export GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "${GIT_BRANCH}" == "HEAD" ]; then export GIT_BRANCH=${CI_BRANCH}; fi
+export GIT_COMMIT_ID=$(git rev-parse HEAD)
+export GIT_LATEST_TAG=$(git describe --abbrev=0 --tags)
+export GIT_COMMIT_TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+
+gitflowEnv () {
+  if [ "${GIT_BRANCH}" == "master" ] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
+      echo "production"
+  elif [[ "${GIT_BRANCH}" == "hotfix/*" ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
+    echo "staging"
+  elif [[ "${GIT_BRANCH}" == "release/*" ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
+    echo "staging"
+  elif [[ "${GIT_BRANCH}" == "hotfix/*" ]]; then
+    echo "testing"
+  elif [[ "${GIT_BRANCH}" == "release/*" ]]; then
+    echo "testing"
+  elif [ "${GIT_BRANCH}" == "develop" ]; then
+    echo "development"
+  else
+    echo "... skipping"
+    echo "Commit: ${GIT_COMMIT_ID}; Branch: ${GIT_BRANCH}; Tag: ${GIT_LATEST_TAG} vs. ${GIT_COMMIT_TAG}"
+    exit 1
+  fi
+}
+echo "Deploying to $(gitflowEnv)"
+ENVIRONMENT=$(gitflowEnv)
+```
+
 ## Infrastructure (AWS)
 EU General Data Protection Regulation (GDPR) - https://segment.com/blog/segment-and-the-gdpr/
 - https://segment.com/blog/secure-access-to-100-aws-accounts/
@@ -188,9 +219,9 @@ Don't use `[default]`, this forces the use of the `--profile` arg so you're cons
 root 				# IAM Users, Billing
 |-- operations 		# CloudTrial, GuardDuty, TerraForm State, Vault
 |-- forensics		# Empty, to be used when forensics need to be done
-|-- production		# Production [master commit@tag]
-|-- staging			# External Testing [release tag]
-|-- testing			# Internal Testing [release commit]
+|-- production		# Production [master tag]
+|-- staging			# External Testing [{hotfix,release}/* tag]
+|-- testing			# Internal Testing [{hotfix,release}/* commit]
 |-- development		# Developer Sandbox [develop commit]
 ```
 
@@ -236,9 +267,11 @@ Basically enable everything for `master` and `develop`.
   - [x] Include administrators
   
 #### git
+[![Git - If that doesn't fix it, git.txt contains the phone number of a friend of mine who understands git. Just wait through a few minutes of 'It's really pretty simple, just think of branches as...' and eventually you'll learn the commands that will fix everything.](https://imgs.xkcd.com/comics/git.png)](https://xkcd.com/1597/)
 ##### Branching
 - Standard: [@nvie/git-flow](https://github.com/nvie/gitflow) [@atlasian/git-flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 - Install: `brew install git-flow`
+- Commands: [Cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/)
  
 ![git-flow Diagram](https://wac-cdn.atlassian.com/dam/jcr:61ccc620-5249-4338-be66-94d563f2843c)
 
@@ -472,10 +505,11 @@ Use popular well known deps
 - rate limiting
 - cache
 - formatting
-- sanitization & xss
+- sanitization
 - req validation
+- security scan (xss, sql injection)
 - csrf
-- res validation
+- res validation (disabled on production)
 
 ### Schema
 - ajv - json-schema
@@ -542,6 +576,7 @@ Use popular well known deps
 - Qualys w/ Selenium (https://www.qualys.com/documentation/)
 - [`sonarwhal`](https://sonarwhal.com) - best practices
 - [tinfoilsecurity](https://www.tinfoilsecurity.com)
+- https://jdow.io/blog/2018/03/18/web-application-penetration-testing-methodology/
 
 #### Other
 - Malware
