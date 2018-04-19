@@ -185,12 +185,8 @@ export GIT_COMMIT_TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
 gitflowEnv () {
   if [ "${GIT_BRANCH}" == "master" ] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
       echo "production"
-  elif [[ "${GIT_BRANCH}" == "hotfix/*" ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
-    echo "staging"
   elif [[ "${GIT_BRANCH}" == "release/*" ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
     echo "staging"
-  elif [[ "${GIT_BRANCH}" == "hotfix/*" ]]; then
-    echo "testing"
   elif [[ "${GIT_BRANCH}" == "release/*" ]]; then
     echo "testing"
   elif [ "${GIT_BRANCH}" == "develop" ]; then
@@ -270,7 +266,7 @@ Basically enable everything for `master` and `develop`.
 [![Git - If that doesn't fix it, git.txt contains the phone number of a friend of mine who understands git. Just wait through a few minutes of 'It's really pretty simple, just think of branches as...' and eventually you'll learn the commands that will fix everything.](https://imgs.xkcd.com/comics/git.png)](https://xkcd.com/1597/)
 ##### Branching
 - Standard: [@nvie/git-flow](https://github.com/nvie/gitflow) [@atlasian/git-flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
-- Install: `brew install git-flow`
+- Install: `brew install git-flow-avh`
 - Commands: [Cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/)
  
 ![git-flow Diagram](https://wac-cdn.atlassian.com/dam/jcr:61ccc620-5249-4338-be66-94d563f2843c)
@@ -304,7 +300,7 @@ $ npm i -D husky @commitlint/{cli,config-conventional,config-lerna-scopes}
     "@commitlint/config-lerna-scopes":"*"
   },
   "scripts": {
-    "commitmsg": "commitlint -e $GIT_PARAMS"
+    "commitmsg": "commitlint -e $GIT_PARAMS"    
   },
   "commitlint": {
     "extends":["@commitlint/config-conventional","@commitlint/config-lerna-scopes"]
@@ -342,24 +338,30 @@ TODO research `npx standard-damn-it` - setup repo
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
 - [`standard`](https://standardjs.com) - linting
-- [`semistandard`](https://github.com/Flet/semistandard) - `standard` with semicolons
 - [`prettier-standard`](https://github.com/sheerun/prettier-standard) - bring them together
+- [`terraform fmt`](https://www.terraform.io/docs/commands/fmt.html) - formatting for terraform files
 
 ```
-$ npm i -D husky lint-staged prettier-standard
+$ npm i -D husky lint-staged prettier standard
 ```
 ```json
 {
   "devDependencies": {
   	"lint-staged":"*",
   	"husky":"*",
-    "prettier-standard":"*"
+    "prettier":"*",
+    "standard":"*"
   },
   "scripts": {
-    "precommit":"lint-staged"
+    "precommit":"lint-staged",
+    "lint": "standard src/**/*.{js,json}",
   },
   "lint-staged": {
-    "src/**/*.{js,json}": [ "prettier-standard", "git add" ]
+    "src/**/*.{js,json}": [ 
+      "prettier --write",
+      "standard --fix", 
+      "git add" 
+    ]
   }
 }
 ```
@@ -495,21 +497,28 @@ Use popular well known deps
 - Jenkins
   - Codeship
 
+## Code Docs
+- [README Template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+- [documentation.js](http://documentation.js.org)
+- [jsdoc](http://usejsdoc.org)
+
 ## API Gateway
 - [OpenAPI](https://www.openapis.org) - definition (basically swagger under the hood)
 - [jsonapi](http://jsonapi.org) - response format
 - [apidocs](http://apidocjs.com) - documentation
 
 ### Middleware
-- authorizations
-- rate limiting
-- cache
-- formatting
-- sanitization
-- req validation
-- security scan (xss, sql injection)
+- query string parse (req)
+- body parse (req)
+- cors (res)
+- language header (req/res)
+- formatting (res)
+- authorization (req)
+- cache header (res)
+- rate limiting (req)
+- sanitization & validation (req/res)
+  - security scan (xss, sql injection)
 - csrf
-- res validation (disabled on production)
 
 ### Schema
 - ajv - json-schema
@@ -529,13 +538,14 @@ Use popular well known deps
 - OWASP A10:2017
 
 ### What
-- request id
-- session / user id
-- timestamp
-- level
-- error code - where in the code
-- stack trace
+- timestamp (taken care of by aws)
+- request id (unique identifier for the event, from aws)
+- version (the version of the code)
+- severity (info, warn, error)
+- message (human readable message)
+- meta (optional json object of data that is needed
 
+ex `${request_id} v${version} [${severity}] "${message}" ${meta?}`
 
 ## Monitoring (WIP)
 
