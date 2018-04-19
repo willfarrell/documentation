@@ -338,15 +338,15 @@ TODO research `npx standard-damn-it` - setup repo
 ##### formatting & linting 
 - [`prettier`](https://prettier.io) - formatting 
 - [`standard`](https://standardjs.com) - linting
-- [`prettier-standard`](https://github.com/sheerun/prettier-standard) - bring them together
 - [`terraform fmt`](https://www.terraform.io/docs/commands/fmt.html) - formatting for terraform files
 
 ```
-$ npm i -D husky lint-staged prettier standard
+$ npm i -D husky lint-staged prettier standard glob-cli
 ```
 ```json
 {
   "devDependencies": {
+    "glob-cli": "1.0.0",
   	"lint-staged":"*",
   	"husky":"*",
     "prettier":"*",
@@ -354,16 +354,16 @@ $ npm i -D husky lint-staged prettier standard
   },
   "scripts": {
     "precommit":"lint-staged",
-    "lint": "standard src/**/*.{js,json}",
+    "lint": "glob-cli 'src/**/*.{css,js,json}' | xargs prettier --write --loglevel warn && glob-cli 'src/**/*.js' | xargs standard --fix",
   },
   "lint-staged": {
+    "src/**/*.{css,json}": [
+      "prettier --write",
+      "git add"
+    ],
     "src/**/*.js": [
       "prettier --write",
       "standard --fix",
-      "git add"
-    ],
-    "src/**/*.json": [
-      "prettier --write",
       "git add"
     ]
   }
