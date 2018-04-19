@@ -357,10 +357,14 @@ $ npm i -D husky lint-staged prettier standard
     "lint": "standard src/**/*.{js,json}",
   },
   "lint-staged": {
-    "src/**/*.{js,json}": [ 
+    "src/**/*.js": [
       "prettier --write",
-      "standard --fix", 
-      "git add" 
+      "standard --fix",
+      "git add"
+    ],
+    "src/**/*.json": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
