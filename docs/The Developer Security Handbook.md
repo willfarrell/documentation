@@ -181,13 +181,14 @@ if [ "${GIT_BRANCH}" == "HEAD" ]; then export GIT_BRANCH=${CI_BRANCH}; fi
 export GIT_COMMIT_ID=$(git rev-parse HEAD)
 export GIT_LATEST_TAG=$(git describe --abbrev=0 --tags)
 export GIT_COMMIT_TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+export GIT_COMMIT_TAG=${GIT_COMMIT_TAG%^*} # See http://schacon.github.io/git/gitrevisions.html for why
 
 gitflowEnv () {
   if [ "${GIT_BRANCH}" == "master" ] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
       echo "production"
-  elif [[ "${GIT_BRANCH}" == "release/*" ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
+  elif [[ "${GIT_BRANCH}" == release/* ]] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
     echo "staging"
-  elif [[ "${GIT_BRANCH}" == "release/*" ]]; then
+  elif [[ "${GIT_BRANCH}" == release/* ]]; then
     echo "testing"
   elif [ "${GIT_BRANCH}" == "develop" ]; then
     echo "development"
@@ -341,29 +342,22 @@ TODO research `npx standard-damn-it` - setup repo
 - [`terraform fmt`](https://www.terraform.io/docs/commands/fmt.html) - formatting for terraform files
 
 ```
-$ npm i -D husky lint-staged prettier standard glob-cli
+$ npm i -D husky lint-staged prettier-standard-cli
 ```
 ```json
 {
   "devDependencies": {
-    "glob-cli": "1.0.0",
   	"lint-staged":"*",
   	"husky":"*",
-    "prettier":"*",
-    "standard":"*"
+    "prettier-standard-cli":"*"
   },
   "scripts": {
     "precommit":"lint-staged",
-    "lint": "glob-cli 'src/**/*.{css,js,json}' | xargs prettier --write --loglevel warn && glob-cli 'src/**/*.js' | xargs standard --fix",
+    "lint": "prettier-standard 'src/**/*.{json,js}'",
   },
   "lint-staged": {
-    "src/**/*.{css,json}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.js": [
-      "prettier --write",
-      "standard --fix",
+    "src/**/*.{css,json,js}": [
+      "prettier-standard",
       "git add"
     ]
   }
