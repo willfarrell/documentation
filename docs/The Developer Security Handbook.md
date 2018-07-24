@@ -165,13 +165,19 @@ TODO:
 git config --global user.name "FULL NAME"
 git config --global user.email "EMAIL@example.com"
 
-# GPG - https://help.github.com/articles/telling-git-about-your-gpg-key/
-gpg --list-secret-keys --keyid-format LONG
-# Copy >>VALUE<< from `sec   rsa4096/>>912C0E0667AB2369<< 2018-02-28 ...`
-git config --global commit.gpgsign true
+# if you don't have a key
+gpg --default-new-key-algo rsa4096 --gen-key
+
+VALUE=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{split($2,a,"/"); print a[2]}')
 git config --global user.signingkey ${VALUE}
+git config --global commit.gpgsign true
+git config --global gpg.program $(which gpg)
 
 git config --global --list
+
+# Get Public Key for GitHub
+gpg --export -a ${VALUE}
+
 ```
 
 #### CI Variables
@@ -180,8 +186,7 @@ export GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ "${GIT_BRANCH}" == "HEAD" ]; then export GIT_BRANCH=${CI_BRANCH}; fi
 export GIT_COMMIT_ID=$(git rev-parse HEAD)
 export GIT_LATEST_TAG=$(git describe --abbrev=0 --tags)
-export GIT_COMMIT_TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
-export GIT_COMMIT_TAG=${GIT_COMMIT_TAG%^*} # See http://schacon.github.io/git/gitrevisions.html for why
+export GIT_COMMIT_TAG=$(git tag -l --points-at HEAD)
 
 gitflowEnv () {
   if [ "${GIT_BRANCH}" == "master" ] && [ "${GIT_LATEST_TAG}" == "${GIT_COMMIT_TAG}" ]; then
