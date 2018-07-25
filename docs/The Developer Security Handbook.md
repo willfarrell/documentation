@@ -166,6 +166,7 @@ git config --global user.name "FULL NAME"
 git config --global user.email "EMAIL@example.com"
 
 # if you don't have a key
+brew install gpg
 gpg --default-new-key-algo rsa4096 --gen-key
 
 VALUE=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{split($2,a,"/"); print a[2]}')
