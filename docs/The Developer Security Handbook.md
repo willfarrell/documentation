@@ -169,7 +169,7 @@ git config --global user.email "EMAIL@example.com"
 gpg --default-new-key-algo rsa4096 --gen-key
 
 VALUE=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{split($2,a,"/"); print a[2]}')
-git config --global user.signingkey ${VALUE}
+git config --global user.signkey ${VALUE}
 git config --global commit.gpgsign true
 git config --global gpg.program $(which gpg)
 
