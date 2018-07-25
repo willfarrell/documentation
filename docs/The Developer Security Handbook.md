@@ -110,7 +110,7 @@ Host cn-test-web-1
 
 ### gpg (GNU Privacy Guard) (WIP)
 Use for encrypting emails / files and signing git commits
-
+1. Download [GPG Suite](https://gpgtools.org/)
 1. Open `GPG Keychain`
 1. Generate new master key and encryption subkey, then press `???`
    - Name: Your Name
